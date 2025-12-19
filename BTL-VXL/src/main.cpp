@@ -1,16 +1,21 @@
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "max30102.h"
+#include <Arduino.h>
+#include "HeartRateSensor.h"
 
-extern "C" void app_main()
-{
-    // configure max30102 with i2c instructions
-    max30102_init();
+void setup() {
+    Serial.begin(115200);
+    setupMAX30102();
+    Serial.println("System Ready!");
+}
 
-    // Loại bỏ display_init() như yêu cầu
+void loop() {
+    Serial.println("Đang đo... Vui lòng giữ yên ngón tay.");
+    readSensorData();
 
-    // Tạo Task
-    xTaskCreate(max30102_task, "max30102_task", 4096, NULL, 5, NULL);
+    if (isDataValid()) {
+        Serial.printf("BPM: %d | SpO2: %d%%\n", getHeartRate(), getSpO2());
+    } else {
+        Serial.println("Dữ liệu không chính xác, thử lại...");
+    }
     
-    // Loại bỏ Task draw_data vì không dùng màn hình
+    delay(100); 
 }
