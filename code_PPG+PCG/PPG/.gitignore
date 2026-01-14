@@ -1,0 +1,10 @@
+# Các thư mục rác sinh ra khi biên dịch
+.pio/
+.venv/
+build/
+.vscode/
+
+# Các file cấu hình cá nhân hoặc tạm thời
+sdkconfig
+*.pyc
+.DS_Store
